@@ -1,0 +1,13 @@
+{
+	"objects":
+	[
+		{
+			"id": 0,
+			"location": "iron_sword"
+		},
+		{
+			"id": 1,
+			"location": "candle"
+		}
+	]
+}
