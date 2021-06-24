@@ -17,10 +17,12 @@ public class Object : MonoBehaviour
     public Material material;
     public Rigidbody rigid_body;
 
-    public Color highlight_color;
+    bool is_highlighted = false;
 
-    public float curr_angle = 0.0f;
-    public float highlight_speed = 4.0f;
+    float highlight_value = 0.0f; //0 no highlight, 1 full highlight
+    float highlight_direction = -1.0f; //Direction of the smoothing of the highlight effect
+
+    float highlight_speed = 2.0f;
 
     public void Start()
     {
@@ -30,17 +32,28 @@ public class Object : MonoBehaviour
 
     public void Update()
     {
-        if(hovered)
-        {
-            material.SetColor("HighlightColor", 
-                highlight_color * (((Mathf.Sin(curr_angle) + 1.0f)/2.0f) * 0.5f + 0.5f));
-            
-            curr_angle += Time.deltaTime * highlight_speed;
-            while(curr_angle >= 2.0f*Mathf.PI) curr_angle -= 2.0f*Mathf.PI;
+        if(hovered == true && is_highlighted == false)
+        { 
+            highlight_direction = 1.0f;
+            is_highlighted = true;
         }
-        else
+
+        if(hovered == false && is_highlighted == true)
         {
-            material.SetColor("HighlightColor", Color.black);
+            highlight_direction = -1.0f;
+            is_highlighted = false;
+        }
+
+        if  (
+                (highlight_direction == 1.0f && //Highlight direction is a float, but this should be okay since its value is always being set by constexprs
+                 highlight_value < 1.0f) 
+                ||
+                (highlight_direction == -1.0f &&
+                highlight_value > 0.0f)
+            )
+        {
+            highlight_value += highlight_direction * highlight_speed * Time.deltaTime;
+            material.SetFloat("Highlighted", highlight_value);       
         }
     }
 

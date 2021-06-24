@@ -97,10 +97,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.03
-  m_Height: 1.0836152
+  m_Radius: 0.07
+  m_Height: 1.95
   m_Direction: 1
-  m_Center: {x: 7.961428e-11, y: -0.288118, z: -0.0000007384753}
+  m_Center: {x: 7.961428e-11, y: -0.49, z: -0.0000007384753}
 --- !u!136 &8926856287101570908
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -111,8 +111,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.02
-  m_Height: 0.25
+  m_Radius: 0.04
+  m_Height: 0.48
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8926856287101570909
@@ -160,7 +160,6 @@ MonoBehaviour:
 
     Price: 1gp'
   hovered: 0
+  takeable: 1
   material: {fileID: 0}
-  highlight_color: {r: 0, g: 0, b: 0, a: 0}
-  curr_angle: 0
-  highlight_speed: 4
+  rigid_body: {fileID: 0}
