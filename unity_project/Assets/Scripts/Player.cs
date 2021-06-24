@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 {
     public PlayerMode current_mode = PlayerMode.PLAYER;
 
-    public ObjectRaycaster raycaster;
+    public MouseRaycaster raycaster;
     public Inventory inventory;
 
     public Transform inventory_holder;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        raycaster = Camera.main.gameObject.GetComponent<ObjectRaycaster>();
+        raycaster = Camera.main.gameObject.GetComponent<MouseRaycaster>();
         inventory = GetComponent<Inventory>();
     
         inventory_holder = transform.Find("InventoryHolder");

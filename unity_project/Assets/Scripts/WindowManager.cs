@@ -8,18 +8,46 @@ public enum WindowType
     OBJECT_INFO,
 };
 
+[RequireComponent(typeof(Canvas))]
 public class WindowManager : MonoBehaviour
 {
+    public static WindowManager instance = null;
+    //There should'nt be any need for multiple window managers
+    //So I'm considering these a Singleton
+    //The way they work right now they can easily be extended
+    //to not be Singletons anymore and allow for multiple window
+    //managers to exist, in case I want to make the screens of
+    //other people visible, for some reason.
+
     public GameObject object_info_window_prefab;
     public GameObject tooltip_prefab;
 
-    public Canvas canvas;
+    Canvas canvas;
 
-    void Start()
+    //Called before any Start()`s
+    void Awake()
     {
-        canvas = GameObject.FindWithTag("Canvas").GetComponent<Canvas>();
+        //If theres already an instance of window manager alive
+        if(instance != null)
+        {
+            Debug.Log("Multiple Instances of Window Manager attempted, the new one was deleted");
+            Destroy(this);
+            //Destroy this instance
+        }
+
+        instance = this; 
+        //If this is the first object of type WindowManager to be
+        //created, then set instance to this object.
+        //Locking the existence of more object of this type via the above if.
     }
 
+    //Get needed references;
+    void Start()
+    {
+        canvas = GetComponent<Canvas>();
+    }
+
+    //Creates a new window
     GameObject CreateWindow(WindowType type)
     {
         if(type == WindowType.OBJECT_INFO)
@@ -35,13 +63,16 @@ public class WindowManager : MonoBehaviour
         return null;
     }
 
-    public void OpenWindow(WindowType type, GameObject object_ref)
+    //Opens an object window for the specificed object;
+    public void OpenObjectWindow(WindowType type, GameObject object_ref)
     {
         if(type == WindowType.OBJECT_INFO)
         {
-            GameObject window = CreateWindow(type);//.GetComponent<WindowObj>().SetObjID(obj_id);
+            GameObject window = CreateWindow(type);
+
             window.GetComponent<WindowObjInfo>()
                     .SetInfo(object_ref);
+
             window.GetComponent<WindowObjInfo>()
                     .MoveTo(new Vector2(0.5f, 0.5f));        
         }
