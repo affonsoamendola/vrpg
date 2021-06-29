@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
     public float run_multiplier = 5.0f;
     public Vector3 speed = new Vector3(1.0f, 1.0f, 1.0f);
 
-    bool no_clip = false;
+    bool no_clip = true;
 
     Rigidbody rigid_body;
     CapsuleCollider capsule_collider;

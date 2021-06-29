@@ -53,7 +53,11 @@ public class Object : MonoBehaviour
             )
         {
             highlight_value += highlight_direction * highlight_speed * Time.deltaTime;
-            material.SetFloat("Highlighted", highlight_value);       
+            highlight_value = Mathf.Clamp(highlight_value, 0.0f, 1.0f);
+
+            material.SetFloat("Highlighted", highlight_value);
+
+
         }
     }
 

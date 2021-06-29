@@ -32,6 +32,7 @@ public class WindowManager : MonoBehaviour
         {
             Debug.Log("Multiple Instances of Window Manager attempted, the new one was deleted");
             Destroy(this);
+            return;
             //Destroy this instance
         }
 

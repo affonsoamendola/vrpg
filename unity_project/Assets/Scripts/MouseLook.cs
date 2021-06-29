@@ -19,6 +19,7 @@ public class MouseLook : MonoBehaviour
         {
             Debug.Log("Multiple Instances of Mouse Look attempted, the new one was deleted");
             Destroy(this);
+            return;
             //Destroy this instance
         }
 

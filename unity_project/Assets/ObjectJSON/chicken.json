@@ -5,6 +5,7 @@
 		"item_name": "Chicken",
 		"description": "TODO",
 		"takeable": 0,
+		"hover_name": 0,
 		"textures":
 		[
 			{
