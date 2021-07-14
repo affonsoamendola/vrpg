@@ -58,6 +58,11 @@ public class MagicDoor : MonoBehaviour
                 
             gameObject.transform.localScale = new_scale;
         }
+
+        if(current_state == DoorState.SHOWN_OPEN)
+        {
+            door_go.transform.localPosition = new Vector3(0f, 0f, 0f);
+        }
     }
 
     public void Update()
