@@ -5,47 +5,52 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(Portal))]
-public class PortalEditor : Editor
+public class PortalEditor : Editor //This is the code for the custom 
+                                   //inspector for interacting with the Portal Class
 {
     Portal selection = null;
     
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        //DrawDefaultInspector(); //Just uncomment to show the default inspector, 
+                                  //if needed for some reason
 
-        Portal this_portal = (Portal)target;
+        Portal thisPortal = (Portal)target;
 
-        EditorGUILayout.LabelField("Currently connected to:");
-        EditorGUILayout.ObjectField(this_portal.current_connection, typeof(Portal), true);
+        EditorGUILayout.LabelField( "Currently connected to:" );
+        EditorGUILayout.ObjectField( thisPortal.currentConnection, 
+                                     typeof(Portal), true);
 
         EditorGUILayout.LabelField("Select Portal to connect to:");
-        selection = (Portal)EditorGUILayout.ObjectField(selection, typeof(Portal), true);
+        selection = (Portal)EditorGUILayout.ObjectField(selection, 
+                                                        typeof(Portal), true);
 
-        EditorGUILayout.Toggle("Is Visible?", this_portal.getRenderer().isVisible);
+        EditorGUILayout.Toggle( "Is Visible?", 
+                                thisPortal.GetRenderer().isVisible);
 
         if(GUILayout.Button("Connect"))
         {
             if(selection != null)
             {
-                this_portal.ConnectTo(selection); 
+                thisPortal.ConnectTo(selection); 
 
                 //Update scene
-                Utility.DirtyChangesToScene(this_portal);
+                Utility.DirtyChangesToScene(thisPortal);
                 Utility.DirtyChangesToScene(selection);
             } 
         }
 
         if(GUILayout.Button("Disconnect"))
         {
-            if(this_portal.current_connection != null)
+            if(thisPortal.currentConnection != null)
             {
                 //Mark as dirty before the disconnect happens, so reference is not lost
-                Utility.DirtyChangesToScene(this_portal.current_connection);
+                Utility.DirtyChangesToScene(thisPortal.currentConnection);
         
-                this_portal.Disconnect(); 
+                thisPortal.Disconnect(); 
 
                  //Update scene
-                Utility.DirtyChangesToScene(this_portal);
+                Utility.DirtyChangesToScene(thisPortal);
             }
         }
     }

@@ -4,26 +4,38 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    public Portal current_connection = null;
+    public static List<Portal> allPortals = new List<Portal>();
 
-    Camera portal_camera = null;
-    Renderer panel_renderer = null;
+    public Portal currentConnection = null;
 
-    public Renderer getRenderer()
+    Camera portalCamera = null;
+    Renderer panelRenderer = null;
+
+    public bool isVisible = false; //This is set by the camera's PortalOccluder
+                                    //Its a nasty hack but I dont care right now.
+    
+    public Renderer GetRenderer() //Just an external getter for this portal cached references 
     {
-        if(panel_renderer == null) CacheReferences();
-        return panel_renderer;
+        if(panelRenderer == null) CacheReferences(); //If reference not cached, cache it
+        return panelRenderer;
     }
 
     public void Awake()
     {
         CacheReferences();
+
+        allPortals.Add(this);
+    }
+
+    public void OnDestroy()
+    {
+        allPortals.Remove(this);
     }
 
     public void CacheReferences()
     {
-        portal_camera = transform.Find("Camera").GetComponent<Camera>();
-        panel_renderer = transform.Find("Plane").GetComponent<Renderer>();
+        portalCamera = transform.Find("Camera").GetComponent<Camera>();
+        panelRenderer = transform.Find("Plane").GetComponent<Renderer>();
     }
 
     [ExecuteAlways]
@@ -31,8 +43,8 @@ public class Portal : MonoBehaviour
     {
         if(!portal.isConnected() && portal != this)
         {
-            current_connection = portal;
-            portal.current_connection = this;
+            currentConnection = portal;
+            portal.currentConnection = this;
             return true;
         }
 
@@ -42,10 +54,10 @@ public class Portal : MonoBehaviour
     [ExecuteAlways]
     public bool Disconnect()
     {
-        if(current_connection != null)
+        if(currentConnection != null)
         {   
-            current_connection.current_connection = null; //Disconects partner portal
-            current_connection = null; //Disconects this portal
+            currentConnection.currentConnection = null; //Disconects partner portal
+            currentConnection = null; //Disconects this portal
             return true;
         }
 
@@ -55,28 +67,28 @@ public class Portal : MonoBehaviour
     public bool isConnected()
     {
 
-        return current_connection != null;
+        return currentConnection != null;
     }
 
     public void Update()
     {
-        if(panel_renderer.isVisible)
+        if(isVisible) //Only do stuff to the connected's portal camera if this portal is visible
         {
-            if(current_connection != null)
+            if(currentConnection != null)
             {
-                Vector3 player_offset = Camera.main.transform.position - transform.position;
+                Vector3 playerOffset = Camera.main.transform.position - transform.position;
 
-                current_connection.portal_camera.transform.position = current_connection.transform.position + player_offset;
+                currentConnection.portalCamera.transform.localPosition = playerOffset;
             }
         }
     }  
 
     public void OnDrawGizmosSelected()
     {
-        if(current_connection != null)
+        if(currentConnection != null)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, current_connection.transform.position);
+            Gizmos.DrawLine(transform.position, currentConnection.transform.position);
         }
     }
 }
